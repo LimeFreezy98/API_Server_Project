@@ -2,6 +2,7 @@
 const express = require("express");
 const fs = require('fs-extra');
 const authenticateToken = require("./middleware/auth");
+const { errorMonitor } = require("events");
 
 const router = express.Router();
 const CARDS_FILE = "./data/cards.json";
@@ -100,6 +101,29 @@ router.get("/sets", async (req, res, next) => {
         res.json({
             successMessage: "Card count retrieved successfully",
             count: cards.length
+        });
+    } catch (err) {
+        next(err);
+    }
+  });
+
+
+  router.get("/cards/random", async (req, res, next) => {
+    try {
+        const cards = await readCards();
+
+        if (!cards.length) {
+            return res.status(404).json({
+                errorMessage: "No cards available"
+            });
+        }
+
+        const randomIndex = Math.floor(Math.random() * cards.length);
+        const randomCard = cards[randomIndex];
+
+        res.json({
+            successMessage: "Random card retrived successfully",
+            card: randomCard
         });
     } catch (err) {
         next(err);
