@@ -73,6 +73,25 @@ router.get("/sets", async (req, res, next) => {
     }
   });
 
+  router.get("/rarities", async (req, res, next) => {
+    try {
+        const cards = await readCards();
+
+        const rarities = [...new Set(
+            cards
+            .map(card => card.rarity)
+            .filter(rarity => rarity && rarity.trim() !== "")
+        )];
+
+        res.json({
+            successMessage: "Rarities retrived successfully",
+            rarities
+        });
+    } catch (err) {
+        next(err);
+    }
+  });
+
 
 /*   create card (protected) */
 router.post("/cards/create", authenticateToken, async (req, res, next) => {
