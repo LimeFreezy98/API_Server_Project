@@ -54,6 +54,26 @@ router.get("/sets", async (req, res, next) => {
     }
   });
 
+  router.get("/types", async (req, res, next) => {
+    try {
+      const cards = await readCards();
+  
+      const types = [...new Set(
+        cards
+          .map(card => card.type)
+          .filter(type => type && type.trim() !== "")
+      )];
+  
+      res.json({
+        successMessage: "Types retrieved successfully",
+        types
+      });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+
 /*   create card (protected) */
 router.post("/cards/create", authenticateToken, async (req, res, next) => {
     try {
