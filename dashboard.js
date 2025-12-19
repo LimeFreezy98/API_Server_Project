@@ -93,6 +93,20 @@ router.get("/sets", async (req, res, next) => {
   });
 
 
+  router.get("/cards/count", async (req, res, next) => {
+    try {
+        const cards = await readCards();
+
+        res.json({
+            successMessage: "Card count retrieved successfully",
+            count: cards.length
+        });
+    } catch (err) {
+        next(err);
+    }
+  });
+
+
 /*   create card (protected) */
 router.post("/cards/create", authenticateToken, async (req, res, next) => {
     try {
