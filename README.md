@@ -2,7 +2,11 @@
 this api will show json file of cards and via using express.js 
 
 
+
 commands:
+
+run server: node index.js
+
 login:
 curl -X POST http://localhost:3000/getToken \
 -H "Content-Type: application/json" \
